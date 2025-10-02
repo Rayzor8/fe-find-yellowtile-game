@@ -4,19 +4,20 @@ import { useEffect, useState } from "react";
 import Board from "./board";
 import Footer from "./footer";
 import Info from "./info";
-import Keyboard from "./controls";
+import Controls from "./controls";
 import { CellType, GridType, Position } from "@/types";
 
 const GRID_SIZE = 6;
-const CELL_SIZE = 60;
+const CELL_SIZE = 50;
 const GAME_DURATION = 60;
 
 export default function BoardGame() {
   const [grid, setGrid] = useState<GridType>([]);
   const [blueTile, setBlueTile] = useState<Position>({ x: 0, y: 5 });
   const [yellowTile, setYellowTile] = useState<Position>({ x: 0, y: 0 });
-  
-  console.log(grid);
+  const [gameOver, setGameOver] = useState<boolean>(false);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+
   const createInitialGrid = (): GridType => {
     const newGrid: GridType = [];
 
@@ -69,8 +70,10 @@ export default function BoardGame() {
     }
   }, []);
 
+
+
   return (
-    <section className="flex flex-col items-center justify-start min-h-screen py-4">
+    <section className="flex flex-col items-center justify-start min-h-screen mt-6">
       <Board
         GRID_SIZE={GRID_SIZE}
         CELL_SIZE={CELL_SIZE}
@@ -79,7 +82,15 @@ export default function BoardGame() {
         blueTile={blueTile}
       />
       <Info />
-      <Keyboard />
+      <Controls
+        grid={grid}
+        GRID_SIZE={GRID_SIZE}
+        gameStarted={gameStarted}
+        setGameStarted={setGameStarted}
+        gameOver={gameOver}
+        blueTile={blueTile}
+        setBlueTile={setBlueTile}
+      />
       <Footer />
     </section>
   );

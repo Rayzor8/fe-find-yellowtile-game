@@ -58,7 +58,7 @@ export default function Controls({
     <div className="grid grid-cols-3 grid-rows-3 gap-1">
       <button
         onClick={() => moveBlueTile("up")}
-        className="bg-gray-500 px-auto hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 col-start-2 cursor-pointer w-14 h-10 flex justify-center items-center"
+        className="bg-gray-500 px-auto hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 col-start-2 cursor-pointer w-18 h-14 flex justify-center items-center"
         disabled={gameOver}
         aria-label="up"
       >
@@ -67,7 +67,7 @@ export default function Controls({
 
       <button
         onClick={() => moveBlueTile("left")}
-        className="bg-gray-500 hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 row-start-2 cursor-pointer w-14 h-10 flex justify-center items-center"
+        className="bg-gray-500 hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 row-start-2 cursor-pointer w-18 h-14 flex justify-center items-center"
         disabled={gameOver}
         aria-label="left"
       >
@@ -76,7 +76,7 @@ export default function Controls({
 
       <button
         onClick={() => moveBlueTile("right")}
-        className="bg-gray-500 hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 row-start-2 col-start-3 cursor-pointer w-14 h-10 flex justify-center items-center"
+        className="bg-gray-500 hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 row-start-2 col-start-3 cursor-pointer w-18 h-14 flex justify-center items-center"
         disabled={gameOver}
         aria-label="right"
       >
@@ -85,7 +85,7 @@ export default function Controls({
 
       <button
         onClick={() => moveBlueTile("down")}
-        className="bg-gray-500 hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 row-start-3 col-start-2 cursor-pointer w-14 h-10 flex justify-center items-center"
+        className="bg-gray-500 hover:bg-gray-700 text-white p-3 rounded-lg transition-colors disabled:opacity-50 row-start-3 col-start-2 cursor-pointer w-18 h-14 flex justify-center items-center"
         disabled={gameOver}
         aria-label="down"
       >

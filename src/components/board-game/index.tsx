@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Board from "./board";
 import Rules from "./rules";
 import Info from "./info";
@@ -17,6 +17,8 @@ export default function BoardGame() {
   const [yellowTile, setYellowTile] = useState<Position>({ x: 0, y: 0 });
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(GAME_DURATION);
 
   const createInitialGrid = (): GridType => {
     const newGrid: GridType = [];
@@ -48,6 +50,23 @@ export default function BoardGame() {
     return newGrid;
   };
 
+  const moveYellowTile = useCallback(() => {
+    const whiteCells: Position[] = [];
+    grid.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell === 'white' && !(x === blueTile.x && y === blueTile.y)) {
+          whiteCells.push({ x, y });
+        }
+      });
+    });
+
+    if (whiteCells.length > 0) {
+      const randomCell = whiteCells[Math.floor(Math.random() * whiteCells.length)];
+      setYellowTile(randomCell);
+    }
+  }, [grid, blueTile]);
+
+
   useEffect(() => {
     const newGrid = createInitialGrid();
     setGrid(newGrid);
@@ -64,11 +83,45 @@ export default function BoardGame() {
 
     // set yellow tile
     if (whiteCells.length > 0) {
-      const randomCell =
+      const randomIndex =
         whiteCells[Math.floor(Math.random() * whiteCells.length)];
-      setYellowTile(randomCell);
+        
+      setYellowTile(randomIndex);
     }
   }, []);
+
+  useEffect(() => {
+    // effect handling game timer
+    if (!gameStarted) return;
+    if (gameOver) return;
+    if (timeLeft <= 0) {
+      setGameOver(true);
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          setGameOver(true);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [gameStarted, gameOver, timeLeft]);
+
+  useEffect(() => {
+    // trigger when blue tile and yellow tile are in the same position
+    const isSamePosition =
+      blueTile.x === yellowTile.x && blueTile.y === yellowTile.y;
+
+    if (isSamePosition && gameStarted && !gameOver) {
+      setScore((prevScore) => prevScore + 1);
+      moveYellowTile();
+    }
+  }, [blueTile.x, blueTile.y ]);
 
   return (
     <section className="flex flex-col items-center justify-start  min-h-screen py-6">
@@ -79,7 +132,7 @@ export default function BoardGame() {
         yellowTile={yellowTile}
         blueTile={blueTile}
       />
-      <Info score={0} timeLeft={GAME_DURATION} />
+      <Info score={score} timeLeft={timeLeft} />
       <Rules gameStarted={gameStarted} gameOver={gameOver} />
       <Controls
         grid={grid}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Board from "./board";
-import Footer from "./footer";
+import Rules from "./rules";
 import Info from "./info";
 import Controls from "./controls";
 import { CellType, GridType, Position } from "@/types";
@@ -70,10 +70,8 @@ export default function BoardGame() {
     }
   }, []);
 
-
-
   return (
-    <section className="flex flex-col items-center justify-start min-h-screen mt-6">
+    <section className="flex flex-col items-center justify-start  min-h-screen py-6">
       <Board
         GRID_SIZE={GRID_SIZE}
         CELL_SIZE={CELL_SIZE}
@@ -81,7 +79,8 @@ export default function BoardGame() {
         yellowTile={yellowTile}
         blueTile={blueTile}
       />
-      <Info />
+      <Info score={0} timeLeft={GAME_DURATION} />
+      <Rules gameStarted={gameStarted} gameOver={gameOver} />
       <Controls
         grid={grid}
         GRID_SIZE={GRID_SIZE}
@@ -91,7 +90,6 @@ export default function BoardGame() {
         blueTile={blueTile}
         setBlueTile={setBlueTile}
       />
-      <Footer />
     </section>
   );
 }

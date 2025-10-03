@@ -54,6 +54,7 @@ export default function Controls({
   }
 
   return (
+    <div className="flex-1 xl:flex-none flex flex-col justify-center">
     <div className="grid grid-cols-3 grid-rows-3 gap-1">
       <button
         onClick={() => moveBlueTile("up")}
@@ -90,6 +91,7 @@ export default function Controls({
       >
         <ChevronDown size={24} />
       </button>  
+    </div>
     </div>
   );
 }

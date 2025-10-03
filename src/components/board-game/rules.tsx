@@ -6,7 +6,7 @@ type FooterProps = {
 export default function Rules({ gameStarted, gameOver }: FooterProps) {
   return (
     <div
-      className={`mb-8 text-center text-white text-sm  ${
+      className={`mb-[20px] text-center text-white text-sm  ${
         !gameStarted && !gameOver ? "visible" : "invisible"
       }`}
     >

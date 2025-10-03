@@ -6,6 +6,7 @@ import Rules from "./rules";
 import Info from "./info";
 import Controls from "./controls";
 import { CellType, GridType, Position } from "@/types";
+import ModalResult from "./modal-result";
 
 const GRID_SIZE = 6;
 const CELL_SIZE = 50;
@@ -54,18 +55,42 @@ export default function BoardGame() {
     const whiteCells: Position[] = [];
     grid.forEach((row, y) => {
       row.forEach((cell, x) => {
-        if (cell === 'white' && !(x === blueTile.x && y === blueTile.y)) {
+        if (cell === "white" && !(x === blueTile.x && y === blueTile.y)) {
           whiteCells.push({ x, y });
         }
       });
     });
 
     if (whiteCells.length > 0) {
-      const randomCell = whiteCells[Math.floor(Math.random() * whiteCells.length)];
+      const randomCell =
+        whiteCells[Math.floor(Math.random() * whiteCells.length)];
       setYellowTile(randomCell);
     }
   }, [grid, blueTile]);
 
+  const handleResetGame = (): void => {
+    const newGrid = createInitialGrid();
+    setGrid(newGrid);
+    setBlueTile({ x: 0, y: 5 });
+
+    const emptyCells: Position[] = [];
+    for (let y = 0; y < newGrid.length; y++) {
+      for (let x = 0; x < newGrid[y].length; x++) {
+        if (newGrid[y][x] === "white" && !(x === 1 && y === 4)) {
+          emptyCells.push({ x, y });
+        }
+      }
+    }
+    if (emptyCells.length > 0) {
+      const randomIndex = Math.floor(Math.random() * emptyCells.length);
+      setYellowTile(emptyCells[randomIndex]);
+    }
+
+    setScore(0);
+    setTimeLeft(GAME_DURATION);
+    setGameOver(false);
+    setGameStarted(false);
+  };
 
   useEffect(() => {
     const newGrid = createInitialGrid();
@@ -85,7 +110,7 @@ export default function BoardGame() {
     if (whiteCells.length > 0) {
       const randomIndex =
         whiteCells[Math.floor(Math.random() * whiteCells.length)];
-        
+
       setYellowTile(randomIndex);
     }
   }, []);
@@ -121,7 +146,7 @@ export default function BoardGame() {
       setScore((prevScore) => prevScore + 1);
       moveYellowTile();
     }
-  }, [blueTile.x, blueTile.y ]);
+  }, [blueTile.x, blueTile.y]);
 
   return (
     <section className="flex flex-col items-center justify-start  min-h-screen py-6">
@@ -143,6 +168,8 @@ export default function BoardGame() {
         blueTile={blueTile}
         setBlueTile={setBlueTile}
       />
+
+      {gameOver && <ModalResult score={score} onResetGame={handleResetGame} />}
     </section>
   );
 }
